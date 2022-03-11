@@ -1,8 +1,8 @@
 ### RHA ( Reverse Hash Algorithm )
 
-RHA is a header-only encryption algorithm that could be used to store files on a server with a unique id , encrypting data or anything imaginable with a unique hash.
+RHA is a header-only hashing algorithm that could be used to store files on a server with a unique id , encrypting data or anything imaginable with a unique hash.
 
-The algorithm does not have a decrypt function, being a 1-way encryption function.
+The algorithm does not have a decrypt function, being a 1-way hashing function.
 
 ``Some Simple Test``
 
