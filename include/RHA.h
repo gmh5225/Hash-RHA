@@ -45,6 +45,7 @@ namespace RHA
 {
 	unsigned int rha_hash(string input) // Reversed Hash Algorithm (RHA)
 	{
+		// procedure 1 ( build the hash and scramble it as good as possible )
 		srand(time_t(0)); // seed
 
 		unsigned int semi_salt = (rand() % 256) * (rand() % 32000) * (rand() % 256 * rand() % 40000); // Some big numbers
@@ -54,14 +55,19 @@ namespace RHA
 		{
 			input[i] = input[i % sizeof(semi_salt)] ^ sizeof(input.length()); // some more scrambling 
 			input[i] = input[i] + random_string(250); // make it impossible to crack
-			hash = hash ^ (input[i]); // XOR each byte of the input
+			hash = hash ^ (input[i % sizeof(semi_salt)]); // XOR each byte of the input
 			semi_salt = semi_salt ^ hash; // XOR the big number with the size of the hash
 			hash = hash * semi_salt;  // multiply it by a random number
 			
 		}
-		string normal_result = to_hex(hash + (unsigned int)random_string(256)); // build the hash
-		return (unsigned int)rev_str(normal_result); // return it
-		
+		string normal_result = to_hex((unsigned int)random_string(50) + hash); // build the hash
+
+		// procedure 2 ( take the hash and hash it even better )
+
+		normal_result = normal_result += (hash ^ semi_salt) ^ hash;
+		string scrabmled = to_hex((unsigned int)normal_result.c_str());
+		return (unsigned int)rev_str(scrabmled); // return it
+
 	}
 
 }
