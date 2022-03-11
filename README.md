@@ -1,2 +1,2 @@
-# RHA
-Reverse Hash Algorithm (RHA)
+### RHA ( Reverse Hash Algorithm )
+
