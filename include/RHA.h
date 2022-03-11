@@ -4,6 +4,7 @@
 #include <sstream>
 #include <algorithm>
 #include <random>
+#include <thread>
 using namespace std;
 
 unsigned int random_string(std::size_t length) // generates a random string
@@ -42,13 +43,12 @@ string to_hex(unsigned int input) // transforms plain text to hexidecimal
 
 namespace RHA
 {
-
-	unsigned int rha_encrypt(string input) // Reversed Hash Algorithm (RHA)
+	unsigned int rha_hash(string input) // Reversed Hash Algorithm (RHA)
 	{
-		srand(time_t(0));
+		srand(time_t(0)); // seed
 
-		unsigned int semi_salt = (rand() % 256) * (rand() % 256) * (rand() % 256 * 99999999); // Some big numbers
-		unsigned int hash = NULL;
+		unsigned int semi_salt = (rand() % 256) * (rand() % 32000) * (rand() % 256 * rand() % 40000); // Some big numbers
+		unsigned int hash = NULL; // init the hash var
 
 		for (int i = 0; i < input.length(); i++)
 		{
@@ -57,9 +57,11 @@ namespace RHA
 			hash = hash ^ (input[i]); // XOR each byte of the input
 			semi_salt = semi_salt ^ hash; // XOR the big number with the size of the hash
 			hash = hash * semi_salt;  // multiply it by a random number
+			
 		}
-		string result = to_hex(hash + (unsigned int)random_string(256));
-		return (unsigned int)rev_str(result); // the result
+		string normal_result = to_hex(hash + (unsigned int)random_string(256)); // build the hash
+		return (unsigned int)rev_str(normal_result); // return it
+		
 	}
 
 }
