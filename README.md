@@ -6,6 +6,20 @@ The algorithm does not have a decrypt function, being a 1-way encryption functio
 
 ``Some Simple Test``
 
+C++ Code : 
+
 ```cpp
   cout << RHA::rha_encrypt("da") << endl;
 ```
+
+Output on the first run :
+
+```4523b59417824004```
+
+Output on the second run : 
+
+``` e933b59419921388 ```
+
+Output on the final run :
+
+``` 5043b59410155912 ```
