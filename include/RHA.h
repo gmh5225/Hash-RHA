@@ -52,6 +52,7 @@ namespace RHA
 
 		for (int i = 0; i < input.length(); i++)
 		{
+			input[i] = input[i % sizeof(semi_salt)] ^ sizeof(input.length());
 			input[i] = input[i] + random_string(250);
 			hash = hash ^ (input[i]); // XOR each byte of the input
 			semi_salt = semi_salt ^ hash; // XOR the big number with the size of the hash
