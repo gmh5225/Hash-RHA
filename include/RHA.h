@@ -56,17 +56,17 @@ namespace RHA
 			input[i] = input[i % sizeof(semi_salt)] ^ sizeof(input.length()); // some more scrambling 
 			input[i] = input[i] + random_string(250); // make it impossible to crack
 			hash = hash ^ (input[i % sizeof(semi_salt)]); // XOR each byte of the input
-			semi_salt = semi_salt ^ hash; // XOR the big number with the size of the hash
-			hash = hash * semi_salt;  // multiply it by a random number
-			
+			semi_salt = semi_salt ^ hash << 3; // XOR the big number with the size of the hash
+			hash = hash * semi_salt << 5;  // multiply it by a random number
+
 		}
 		string normal_result = to_hex((unsigned int)random_string(50) + hash); // build the hash
 
-		// procedure 2 ( take the hash and hash it even better )
+		// procedure 2 ( take the hash and make it so hash identifiers cant assosiate it with other algorithms )
 
 		normal_result = normal_result += (hash ^ semi_salt) ^ hash;
 		string scrambled = to_hex((unsigned int)normal_result.c_str());
-		return (unsigned int)rev_str(scrambled); // return it
+		return (unsigned int)rev_str(scrambled += "#"); // return it
 
 	}
 
