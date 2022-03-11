@@ -65,8 +65,8 @@ namespace RHA
 		// procedure 2 ( take the hash and hash it even better )
 
 		normal_result = normal_result += (hash ^ semi_salt) ^ hash;
-		string scrabmled = to_hex((unsigned int)normal_result.c_str());
-		return (unsigned int)rev_str(scrabmled); // return it
+		string scrambled = to_hex((unsigned int)normal_result.c_str());
+		return (unsigned int)rev_str(scrambled); // return it
 
 	}
 
