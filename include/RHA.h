@@ -52,14 +52,14 @@ namespace RHA
 
 		for (int i = 0; i < input.length(); i++)
 		{
-			input[i] = input[i % sizeof(semi_salt)] ^ sizeof(input.length());
-			input[i] = input[i] + random_string(250);
+			input[i] = input[i % sizeof(semi_salt)] ^ sizeof(input.length()); // some more scrambling 
+			input[i] = input[i] + random_string(250); // make it impossible to crack
 			hash = hash ^ (input[i]); // XOR each byte of the input
 			semi_salt = semi_salt ^ hash; // XOR the big number with the size of the hash
 			hash = hash * semi_salt;  // multiply it by a random number
 		}
-		string result = to_hex(hash + (unsigned int)random_string(256)); // the result
-		return (unsigned int)rev_str(result);
+		string result = to_hex(hash + (unsigned int)random_string(256));
+		return (unsigned int)rev_str(result); // the result
 	}
 
 }
