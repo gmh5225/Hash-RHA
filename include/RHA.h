@@ -5,22 +5,9 @@
 #include <algorithm>
 #include <random>
 #include <thread>
+#include "md5.h"
+
 using namespace std;
-
-unsigned int random_string(std::size_t length) // generates a random string
-{
-	const std::string CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789";
-	std::random_device random_device;
-	std::mt19937 generator(random_device());
-	std::uniform_int_distribution<> distribution(0, CHARACTERS.size() - 1);
-	unsigned int random_string = NULL;
-	for (std::size_t i = 0; i < length; ++i)
-	{
-		random_string += CHARACTERS[distribution(generator)];
-	}
-	return random_string;
-}
-
 
 unsigned int rev_str(string& str) // reverses the string
 {
@@ -29,7 +16,6 @@ unsigned int rev_str(string& str) // reverses the string
 
 	return (unsigned int)str.c_str();
 }
-
 
 string to_hex(unsigned int input) // transforms plain text to hexidecimal
 {
@@ -54,19 +40,25 @@ namespace RHA
 		for (int i = 0; i < input.length(); i++)
 		{
 			input[i] = input[i % sizeof(semi_salt)] ^ sizeof(input.length()); // some more scrambling 
-			input[i] = input[i] + random_string(250); // make it impossible to crack
 			hash = hash ^ (input[i % sizeof(semi_salt)]); // XOR each byte of the input
 			semi_salt = semi_salt ^ hash << 3; // XOR the big number with the size of the hash
 			hash = hash * semi_salt << 5;  // multiply it by a random number
 
 		}
-		string normal_result = to_hex((unsigned int)random_string(50) + hash); // build the hash
+		string normal_result = to_hex(hash); // build the hash
 
 		// procedure 2 ( take the hash and make it so hash identifiers cant assosiate it with other algorithms )
 
 		normal_result = normal_result += (hash ^ semi_salt) ^ hash;
 		string scrambled = to_hex((unsigned int)normal_result.c_str());
-		return (unsigned int)rev_str(scrambled += "#"); // return it
+
+		// procedure 3 ( get the hash and encode it with md5 , and the md5 result will be added to the hash )
+
+		string md5_result = md5(scrambled); // encode it using md5
+
+		string final_result = (scrambled + md5_result); // add it to the string
+
+		return rev_str(final_result); // return it but reversed
 
 	}
 
