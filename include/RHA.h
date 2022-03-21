@@ -9,12 +9,14 @@
 
 using namespace std;
 
+
 unsigned int rev_str(string& str) // reverses the string
 {
 	for (int i = str.length() - 1; i >= 0; i--)
 		cout << str[i];
 
-	return (unsigned int)str.c_str();
+	
+	return tolower((unsigned int)str.c_str());
 }
 
 string to_hex(unsigned int input) // transforms plain text to hexidecimal
